@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import page.LoginModal;
 import page.MainPage;
 import page.MenuSection;
+import page.SettingsModal;
 import session.Session;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ public class MyStepLogin {
     LoginModal loginModal = new LoginModal();
     MenuSection menuSection= new MenuSection();
 
+    SettingsModal settingsModal = new SettingsModal();
 
     @Given("la pagina {string} este abierta")
     public void laPaginaEsteAbierta(String url) {
@@ -38,4 +40,18 @@ public class MyStepLogin {
                 "ERROR el login fallo");
     }
 
+
+    @When("yo quiero cambiar mi password")
+    public void yoQuieroCambiarMiPassword(Map<String,String> credential) {
+        mainPage.settingsButton.click();
+        settingsModal.oldPasswordTxtBox.writeText(credential.get("oldpassword"));
+        settingsModal.newPasswordTxtBox.writeText(credential.get("newpassword"));
+        settingsModal.okButton.click();
+    }
+
+    @Then("deberia volver a la pantalla principal de la app web")
+    public void deberiaVolverALaPantallaPrincipalDeLaAppWeb() {
+        Assertions.assertTrue(menuSection.logoutButton.isControlDisplayed(),
+                "ERROR el login fallo");
+    }
 }
